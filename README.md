@@ -11,7 +11,8 @@ NetworkClient running on SerializableMessage
 
 ```csharp
 var networkClient = new NetworkClient(LoadBalancingClient);
-networkClient.SendMessage(new TestSerializableMessage()
+networkClient.SendMessage(
+    new TestSerializableMessage()
     {
         StringValue = "test"
     }

@@ -1,0 +1,17 @@
+{
+    "name": "AffenCode.PhotonRealtimeMessages",
+    "rootNamespace": "",
+    "references": [
+        "GUID:407b0e045e01b4059bcd30762778e0f2",
+        "GUID:831409e8f9d13b5479a3baef9822ad34"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

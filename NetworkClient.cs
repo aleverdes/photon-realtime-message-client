@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
+using UnityEngine;
 
 namespace AffenCode
 {
@@ -9,7 +11,7 @@ namespace AffenCode
     {
         private LoadBalancingClient _loadBalancingClient;
         private Dictionary<Type, Queue<object>> _messages;
-        private readonly byte _photonEventCode = 0;
+        private readonly byte _photonEventCode;
 
         public NetworkClient(LoadBalancingClient loadBalancingClient, byte photonEventCode = 0)
         {
@@ -72,7 +74,8 @@ namespace AffenCode
                 return;
             }
 
-            var bytes = (byte[]) photonEvent.Parameters[0];
+            var value = ((Hashtable) photonEvent.Parameters.FirstOrDefault().Value)[0];
+            var bytes = (byte[]) value;
             var message = SerializableMessage.Deserialize(bytes);
 
             if (!_messages.ContainsKey(message.GetType()))

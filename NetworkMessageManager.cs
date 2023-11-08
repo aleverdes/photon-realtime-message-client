@@ -4,17 +4,16 @@ using System.Linq;
 using AleVerDes.BinarySerialization;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
-using UnityEngine;
 
 namespace AleVerDes.PhotonRealtimeMessages
 {
-    public class NetworkClient
+    public class NetworkMessageManager
     {
         private LoadBalancingClient _loadBalancingClient;
         private Dictionary<Type, Queue<object>> _messages;
         private readonly byte _photonEventCode;
 
-        public NetworkClient(LoadBalancingClient loadBalancingClient, byte photonEventCode = 0)
+        public NetworkMessageManager(LoadBalancingClient loadBalancingClient, byte photonEventCode = 0)
         {
             _loadBalancingClient = loadBalancingClient;
             _loadBalancingClient.EventReceived += OnEventReceived;
@@ -22,7 +21,7 @@ namespace AleVerDes.PhotonRealtimeMessages
             _photonEventCode = photonEventCode;
         }
 
-        ~NetworkClient()
+        ~NetworkMessageManager()
         {
             _loadBalancingClient.EventReceived -= OnEventReceived;
             _loadBalancingClient = null;

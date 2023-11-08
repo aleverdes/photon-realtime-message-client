@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AleVerDes.BinarySerialization;
 using ExitGames.Client.Photon;
 using Photon.Realtime;
 using UnityEngine;
 
-namespace AffenCode
+namespace AleVerDes.PhotonRealtimeMessages
 {
     public class NetworkClient
     {
@@ -28,16 +29,16 @@ namespace AffenCode
             _messages = null;
         }
 
-        public void SendMessage(SerializableMessage message)
+        public void SendMessage(object message)
         {
-            SendMessage(message, MessageOptions.Default);
+            SendMessage(message, MessageOptions.ToOthers);
         }
 
-        public void SendMessage(SerializableMessage message, MessageOptions options)
+        public void SendMessage(object message, MessageOptions options)
         {
             var data = new Hashtable()
             {
-                [0] = message.Serialize()
+                [0] = BinarySerializer.Serialize(message)
             };
 
             var raiseEventOptions = new RaiseEventOptions
@@ -49,7 +50,7 @@ namespace AffenCode
             _loadBalancingClient.OpRaiseEvent(_photonEventCode, data, raiseEventOptions, options.SendOptions);
         }
 
-        public bool TryTakeMessage<T>(out T message) where T : SerializableMessage
+        public bool TryTakeMessage<T>(out T message) where T : class, new()
         {
             if (!_messages.ContainsKey(typeof(T)))
             {
@@ -76,7 +77,7 @@ namespace AffenCode
 
             var value = ((Hashtable) photonEvent.Parameters.FirstOrDefault().Value)[0];
             var bytes = (byte[]) value;
-            var message = SerializableMessage.Deserialize(bytes);
+            var message = BinarySerializer.Deserialize(bytes);
 
             if (!_messages.ContainsKey(message.GetType()))
             {

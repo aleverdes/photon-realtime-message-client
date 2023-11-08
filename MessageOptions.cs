@@ -18,7 +18,7 @@ namespace AleVerDes.PhotonRealtimeMessages
         
         public static MessageOptions ToAll => new()
         {
-            ReceiverGroup = ReceiverGroup.Others,
+            ReceiverGroup = ReceiverGroup.All,
             EventCaching = EventCaching.DoNotCache,
             SendOptions = SendOptions.SendReliable
         };
@@ -32,7 +32,7 @@ namespace AleVerDes.PhotonRealtimeMessages
         
         public static MessageOptions ToAllAndCache => new()
         {
-            ReceiverGroup = ReceiverGroup.Others,
+            ReceiverGroup = ReceiverGroup.All,
             EventCaching = EventCaching.AddToRoomCache,
             SendOptions = SendOptions.SendReliable
         };

@@ -7,13 +7,21 @@ using Photon.Realtime;
 
 namespace AleVerDes.PhotonRealtimeMessages
 {
-    public class NetworkMessageManager
+    public interface INetworkMessageBus
+    {
+        void SendMessage(object message);
+        void SendMessage(object message, MessageOptions options);
+
+        bool TryTakeMessage<T>(out T message) where T : class, new();
+    }
+    
+    public class NetworkMessageBus : INetworkMessageBus
     {
         private LoadBalancingClient _loadBalancingClient;
         private Dictionary<Type, Queue<object>> _messages;
         private readonly byte _photonEventCode;
 
-        public NetworkMessageManager(LoadBalancingClient loadBalancingClient, byte photonEventCode = 0)
+        public NetworkMessageBus(LoadBalancingClient loadBalancingClient, byte photonEventCode = 0)
         {
             _loadBalancingClient = loadBalancingClient;
             _loadBalancingClient.EventReceived += OnEventReceived;
@@ -21,7 +29,7 @@ namespace AleVerDes.PhotonRealtimeMessages
             _photonEventCode = photonEventCode;
         }
 
-        ~NetworkMessageManager()
+        ~NetworkMessageBus()
         {
             _loadBalancingClient.EventReceived -= OnEventReceived;
             _loadBalancingClient = null;
